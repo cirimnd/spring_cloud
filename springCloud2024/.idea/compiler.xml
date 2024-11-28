@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="bkmall-order" />
         <module name="bkmall-book" />
         <module name="bkmall-common" />
       </profile>
@@ -16,6 +17,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="bkmall-book" options="-parameters" />
       <module name="bkmall-common" options="-parameters" />
+      <module name="bkmall-order" options="-parameters" />
       <module name="springCloud2024" options="" />
     </option>
   </component>

@@ -3,8 +3,8 @@ package com.example.bkmallbook.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.bkmallbook.entity.Book;
-import com.example.bkmallbook.entity.Result;
-//import com.example.bkmallcommon.pojo.Result;
+//import com.example.bkmallbook.entity.Result;
+import com.example.bkmallcommon.pojo.Result;
 import com.example.bkmallbook.service.IBookService;
 import lombok.RequiredArgsConstructor;
 import org.apache.el.util.ReflectionUtil;
