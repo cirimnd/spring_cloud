@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("order")
+@TableName("tb_order")
 public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,7 +37,7 @@ public class Order implements Serializable {
     private Long userId;
 
     /**
-     * 书本ID, 也就是ISBN
+     * 书本ID
      */
     private Long bookId;
 

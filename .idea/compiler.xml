@@ -8,7 +8,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="bkmall-book" />
         <module name="bkmall-common" />
-        <module name="bkmall-user" />
       </profile>
     </annotationProcessing>
   </component>

@@ -4,12 +4,15 @@ package com.example.bkmallbook.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.bkmallbook.entity.Book;
 //import com.example.bkmallbook.entity.Result;
+import com.example.bkmallcommon.domain.dto.BookDto;
 import com.example.bkmallcommon.pojo.Result;
 import com.example.bkmallbook.service.IBookService;
 import lombok.RequiredArgsConstructor;
 import org.apache.el.util.ReflectionUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -32,10 +35,19 @@ public class BookController {
      * @return
      */
     @GetMapping("/{id}")
-    public Result getBookById(@PathVariable("id") int id) {
+    public Result getBookById(@PathVariable("id") Long id) {
         Book book = bookService.lambdaQuery()
                 .eq(Book::getId, id).one();
         return Result.success(book);
+    }
+
+    @GetMapping("/dto/{id}")
+    public BookDto getBookDtoById(@PathVariable("id") Long id) {
+        Book book = bookService.lambdaQuery()
+                .eq(Book::getId, id).one();
+        BookDto bookDto = new BookDto();
+        BeanUtils.copyProperties(book,bookDto);
+        return bookDto;
     }
 
     /**
@@ -87,7 +99,7 @@ public class BookController {
      * @return
      */
     @GetMapping("/price")
-    public Result getBooksByPrice(@RequestParam int maxPrice, @RequestParam int minPrice) {
+    public Result getBooksByPrice(@RequestParam BigDecimal maxPrice, @RequestParam BigDecimal minPrice) {
         List<Book> bookList = bookService.lambdaQuery()
                 .le(Book::getPrice, maxPrice)
                 .ge(Book::getPrice, minPrice)
@@ -102,7 +114,7 @@ public class BookController {
      * @return
      */
     @DeleteMapping("/{id}")
-    public Result deleteBookById(@PathVariable("id") int id) {
+    public Result deleteBookById(@PathVariable("id") Long id) {
         QueryWrapper<Book> wrapper = new QueryWrapper<>();
         wrapper.lambda()
                 .eq(Book::getId, id);

@@ -31,4 +31,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 .eq(Order::getUserId, userId);
         return orderMapper.selectList(queryWrapper);
     }
+
+    @Override
+    public List<Order> getByBookId(Long bookId) {
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda()
+                .eq(Order::getBookId, bookId);
+        return orderMapper.selectList(queryWrapper);
+    }
 }

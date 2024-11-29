@@ -17,7 +17,8 @@
     <modules>
         <module>bkmall-book</module>
         <module>bkmall-common</module>
-        <module>bkmall-common</module>
+        <module>bkmall-user</module>
+        <module>bkmall-order</module>
     </modules>
 
     <properties>

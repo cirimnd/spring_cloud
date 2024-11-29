@@ -11,7 +11,6 @@ public class OrderVo {
     private Integer orderState;
     private LocalDateTime orderDatetime;
     private String address;
-    private String bookName;
     private Double bookPrice;
     private String bookTitle;
     private String bookAuthor;

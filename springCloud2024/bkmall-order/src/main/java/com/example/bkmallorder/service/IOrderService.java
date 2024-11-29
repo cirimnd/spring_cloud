@@ -16,4 +16,6 @@ import java.util.List;
 public interface IOrderService extends IService<Order> {
 
     List<Order> getByUserId(Long userId);
+
+    List<Order> getByBookId(Long bookId);
 }
