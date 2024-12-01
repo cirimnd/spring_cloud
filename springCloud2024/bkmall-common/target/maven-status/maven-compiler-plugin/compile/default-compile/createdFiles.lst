@@ -1,0 +1,4 @@
+com\example\bkmallcommon\domain\dto\UserDto.class
+com\example\bkmallcommon\pojo\Result.class
+com\example\bkmallcommon\BKmallCommonApplication.class
+com\example\bkmallcommon\domain\dto\BookDto.class
