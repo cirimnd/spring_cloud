@@ -121,4 +121,18 @@ public class BookController {
         bookService.remove(wrapper);
         return Result.success("删除成功");
     }
+
+    /**
+     * 更新书本
+     * @param book
+     * @return
+     */
+    @PutMapping("/edit")
+    public Result update(@RequestBody Book book) {
+        boolean flg = bookService.lambdaUpdate()
+                .setEntity(book)
+                .update();
+        if(flg) return Result.success("更新成功");
+        else return Result.error("更新失败");
+    }
 }

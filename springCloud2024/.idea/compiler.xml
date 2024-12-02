@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="bkmall-order" />
+        <module name="bkmall-cart" />
         <module name="bkmall-book" />
         <module name="bkmall-common" />
         <module name="bkmall-user" />
@@ -17,6 +18,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="bkmall-book" options="-parameters" />
+      <module name="bkmall-cart" options="-parameters" />
       <module name="bkmall-common" options="-parameters" />
       <module name="bkmall-order" options="-parameters" />
       <module name="bkmall-user" options="-parameters" />
