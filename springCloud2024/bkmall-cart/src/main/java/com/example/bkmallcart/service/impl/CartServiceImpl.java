@@ -1,6 +1,6 @@
 package com.example.bkmallcart.service.impl;
 
-import com.example.bkmallorder.client.BookClient;
+import com.example.bkmallcommon.client.BookClient;
 import com.example.bkmallcart.domain.dto.CartDto;
 import com.example.bkmallcart.entity.Cart;
 import com.example.bkmallcart.mapper.CartMapper;

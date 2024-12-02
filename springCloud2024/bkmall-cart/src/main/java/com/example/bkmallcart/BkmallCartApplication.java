@@ -6,7 +6,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = "com.example.bkmallorder.client")
+@EnableFeignClients(basePackages = "com.example.bkmallcommon.client")
 @SpringBootApplication
 public class BkmallCartApplication {
 

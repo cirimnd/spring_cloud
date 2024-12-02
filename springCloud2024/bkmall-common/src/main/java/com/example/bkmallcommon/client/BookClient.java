@@ -1,4 +1,4 @@
-package com.example.bkmallorder.client;
+package com.example.bkmallcommon.client;
 
 import com.example.bkmallcommon.domain.dto.BookDto;
 import com.example.bkmallcommon.pojo.Result;
