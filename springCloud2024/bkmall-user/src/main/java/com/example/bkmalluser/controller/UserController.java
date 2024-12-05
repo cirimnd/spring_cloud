@@ -55,7 +55,22 @@ public class UserController {
         }
     }
 
-
+    @PostMapping("/login")
+    public Result login(@RequestBody User user) {
+        User userIn = userService.lambdaQuery().eq(User::getUserName, user.getUserName()).one();
+        if (userIn == null) {
+            return Result.error("用户不存在");
+        }
+        else if(userIn.getPassword().equals(user.getPassword())){
+            if(userIn.getRole()==Role.USER)
+                return Result.success("登录成功！");
+            else
+                return Result.error("您是管理员，请在管理员页面登录！");
+        }
+        else{
+            return Result.error("密码错误！");
+        }
+    }
 
     //增加管理员
     @PostMapping("/addAdmin")
