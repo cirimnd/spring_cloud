@@ -1,20 +1,40 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { User, Role } from '@/components/BaDataStruct/Usrs';
 import { ElMessage } from 'element-plus';
 import { Order } from '@/components/BaDataStruct/orderAll';
 import ordersmall from '@/components/ordersmall.vue';
+import { useRouter,useRoute } from 'vue-router';
+import { apiGetUserByName } from '@/apis/getUserByName';
+import { apiUpdateUser } from '@/apis/updateUser';
+const router = useRouter()
+const route = useRoute()
 
-// 将 exampleUser 包装为 ref 类型
+const{userName,password}=route.query
 const exampleUser = ref(
   new User({
     userid: 10,
-    userName: 'jhony',
-    password: '123456',
+    userName: userName as string,
+    password: password as string,
     phone: '18277098765',
     role: Role.USER,
   })
 );
+onBeforeMount(()=>{
+  async function main() {
+    let res=await apiGetUserByName(userName as string)
+    if(res.code==1){
+      const {userid,userName,password,phone,role} = res.data
+      exampleUser.value.setPhone(phone)
+      exampleUser.value.setUserid(userid)
+    }
+    else alert("请联系管理员！");
+  }
+  main()
+})
+
+// 将 exampleUser 包装为 ref 类型
+
 const orders = ref<Order[]>([
   new Order({ orderId: 1, userId: 101, bookId: 201, bookPrice: 120, state: 0, orderDatetime: new Date(), address: '天河', bookname: '三体' }),
   new Order({ orderId: 2, userId: 102, bookId: 202, bookPrice: 80, state: 0, orderDatetime: new Date(), address: '越秀', bookname: '围城' }),
@@ -40,24 +60,49 @@ const openEditDialog = () => {
 };
 
 // 确认修改事件
-const confirmEdit = () => {
+const confirmEdit = async () => {
   // 更新用户信息
+  let flg=0
+  if(exampleUser.value.userName!=tempUser.value.userName||
+  exampleUser.value.password!=tempUser.value.password){
+    flg=1
+  }
   exampleUser.value = { ...tempUser.value };
-  isDialogVisible.value = false; // 关闭弹窗
-  ElMessage.success('个人信息更新成功');
+  let param = {
+    userid:tempUser.value.userid,
+    userName:tempUser.value.userName,
+    password:tempUser.value.password,
+    phone:tempUser.value.phone
+  }
+  let res = await apiUpdateUser(param)
+  if(res.code==1&&flg==0){
+    isDialogVisible.value = false; // 关闭弹窗
+    ElMessage.success('个人信息更新成功');
+  }
+  else if(res.code==1&&flg==1){
+    ElMessage.success('个人信息更新成功,请重新登录！');
+    router.push("/login");
+  }
+  else ElMessage.error("更新失败！");
+  
 };
 
 // 取消修改事件
 const cancelEdit = () => {
   isDialogVisible.value = false; // 关闭弹窗
 };
+
+function back()
+{
+  router.go(-1)
+}
 </script>
 
 <template>
   <div class="Mainbox">
     <div class="head">
       <div class="mb-4">
-        <el-button round>首页</el-button>
+        <el-button round @click="back">首页</el-button>
         <el-button round>购物车</el-button>
       </div>
     </div>

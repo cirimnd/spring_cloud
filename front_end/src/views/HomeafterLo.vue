@@ -4,7 +4,14 @@ import BookSimple from '@/components/BookSimple.vue';
 import { Book } from '@/components/BaDataStruct/Book';
 import BookSimpleNL from '@/components/BookSimpleNL.vue';
 import { Order } from '@/components/BaDataStruct/orderAll';
+import {useRoute,useRouter} from 'vue-router'
+const route = useRoute()
+const router = useRouter()
 
+let {userName,password}=route.params
+// console.log(route.params)
+// console.log(userName)
+// console.log(password)
 // 模拟 books 数据
 const books = ref<Book[]>([
   new Book({
@@ -87,7 +94,18 @@ const options = [
 //
 const input1 = ref('');
 
-
+function toPerson()
+{
+  router.push(
+    {
+      path:"/personal",
+      query:{
+        userName:userName,
+        password:password
+      }
+    }
+  )
+}
 </script>
 
 <template>
@@ -121,7 +139,7 @@ const input1 = ref('');
         </div>
         <div class="head22">
           <el-button round size="large">购物车</el-button>
-          <el-button round size="large">个人</el-button>
+          <el-button round size="large" @click="toPerson">个人</el-button>
         </div>
       </div>
     </div>

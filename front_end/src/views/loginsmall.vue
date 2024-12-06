@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter()
 const inputName=ref('');
 const inputPassword=ref('');
+import { ElMessage } from 'element-plus';
 
 function login(){
   let param=({
@@ -18,16 +19,17 @@ async function main()
   console.log(res)
   if(res.code==1)
   {
-    alert("登录成功");
+    ElMessage.success('登录成功');
+    // alert("登录成功");
     router.push({
-      path:"/home",
-      query:{
+      name:"home",
+      params:{
         userName:inputName.value,
-        password:inputPassword.value
+        password:inputPassword.value,
       }
     })
   }
-  else alert("登录失败")
+  else ElMessage.error(res.msg);
 }
 main();
 }

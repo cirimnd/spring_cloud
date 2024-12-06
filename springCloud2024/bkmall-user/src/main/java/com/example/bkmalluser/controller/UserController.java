@@ -38,7 +38,7 @@ public class UserController {
 
     //name查用户
     @GetMapping("/name")
-    public Result getBooksByName(@RequestParam String name) {
+    public Result getUserByName(@RequestParam String name) {
        User user= userService.lambdaQuery()
                .eq(User::getUserName,name).one();
        return Result.success(user);
@@ -127,7 +127,14 @@ public class UserController {
     }
     //
 
-
+    @PutMapping("/edit")
+    public Result editUser(@RequestBody User user) {
+        boolean isUpdated = userService.updateById(user);
+        if (isUpdated) {
+            return Result.success("更新成功");
+        }
+        else return Result.error("更新失败");
+    }
 
 
 }

@@ -1,8 +1,36 @@
-<script>
+<script lang="ts" setup>
  import { ref } from 'vue';
+ import { apiRegister } from '@/apis/register.';
+ import { ElMessage } from 'element-plus';
  const inputName=ref('');
 const inputPassword=ref('');
 const inputPassAgain=ref('');
+const inputPhone=ref('');
+
+function register()
+{
+  if(inputPassword.value!=inputPassAgain.value){
+    alert("两次密码输入不一样，请重新输入!")
+  }
+  else{
+    let param={
+      userName:inputName.value,
+      password:inputPassword.value,
+      phone:inputPhone.value,
+      role:"用户"
+    }
+    async function main() {
+      let res = await apiRegister(param)
+      if(res.code==1){
+        ElMessage.success("注册成功！")
+      }
+      else{
+        ElMessage.error("注册失败！请联系管理员！")
+      }
+    }
+    main()
+  }
+}
 
 </script>
 
@@ -13,12 +41,13 @@ const inputPassAgain=ref('');
     <div class="L111">
               
          <el-input v-model="inputName" style="width: 240px" placeholder="用户名" />
+         <el-input v-model="inputPhone" style="width: 240px" placeholder="手机号" />
          <el-input v-model="inputPassword" style="width: 240px" placeholder="密码" />
          <el-input v-model="inputPassAgain" style="width: 240px" placeholder="再次输入密码" />
     </div>
 
     <div class="L112">
-        <el-button type="success" round >注册</el-button>
+        <el-button type="success" round @click="register">注册</el-button>
     </div>
 
     </div>

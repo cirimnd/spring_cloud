@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter()
 
 //筛选选择值
 const checked1 = ref(false);
@@ -28,6 +30,12 @@ const options = [
 
 //
 const input1 = ref('');
+
+function loginOrRegister(){
+  router.push({
+    path:"/login"
+  })
+}
 
 </script>
 
@@ -66,7 +74,7 @@ const input1 = ref('');
 
             <div class="head22">
                 <!-- <el-button round size="large">购物车</el-button> -->
-                <el-button round size="large">注册/登录</el-button>
+                <el-button round size="large" @click="loginOrRegister">注册/登录</el-button>
             </div>
               
                   
