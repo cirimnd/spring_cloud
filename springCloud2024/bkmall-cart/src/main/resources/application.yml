@@ -2,7 +2,7 @@ server:
   port: 8083
 spring:
   application:
-    name: book-service
+    name: cart-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/spring_cloud

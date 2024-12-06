@@ -1,41 +1,45 @@
 <script lang="ts" setup>
-import { defineProps } from 'vue';
-import { Order } from './BaDataStruct/orderAll';
-import { ref } from 'vue';
+import { defineProps, defineEmits } from 'vue';
 import { ElButton, ElCard } from 'element-plus';
 import 'element-plus/theme-chalk/el-button.css';
 import 'element-plus/theme-chalk/el-card.css';
 
 // 接收父组件传递的订单数据
 const props = defineProps<{
-  order: Order;
+  cartItem: {
+    cartId: number;
+    userId: number;
+    bookId: number;
+    bookTitle: string;
+    bookAuthor: string;
+    quantity: number;
+    totalPrice: number;
+  };
 }>();
 
-// 按钮点击事件：修改订单状态
+// 定义事件，用于通知父组件更新状态
+const emit = defineEmits(['updateStatus']);
+
+// 按钮点击事件：通知父组件更新订单状态
 const handleButtonClick = () => {
-  props.order.state = 1; // 修改状态为已付款
+  emit('updateStatus', props.cartItem.cartId); // 向父组件发送 cartId
 };
 </script>
 
 <template>
   <div class="Mainbox">
     <ElCard shadow="hover" class="order-card">
-      <h3>{{ order.bookname }}</h3>
-      <p><strong>Price:</strong> ${{ order.bookPrice }}</p>
-      <p><strong>Order Date:</strong> {{ order.orderDatetime.toLocaleString() }}</p>
-      <p><strong>Address:</strong> {{ order.address }}</p>
-      <p>
-        <strong>Status:</strong>
-        <span v-if="order.state === 0" style="color: red;">未付款</span>
-        <span v-else style="color: green;">已付款</span>
-      </p>
+      <h3>{{ cartItem.bookTitle }}</h3>
+      <p><strong>Author:</strong> {{ cartItem.bookAuthor }}</p>
+      <p><strong>Quantity:</strong> {{ cartItem.quantity }}</p>
+      <p><strong>Total Price:</strong> ¥{{ cartItem.totalPrice }}</p>
     </ElCard>
     <ElButton
       type="primary"
-      :disabled="order.state === 1"
+      :disabled="false"
       @click="handleButtonClick"
     >
-      {{ order.state === 0 ? '付款' : '已付款' }}
+      结算
     </ElButton>
   </div>
 </template>
@@ -43,7 +47,8 @@ const handleButtonClick = () => {
 <style lang="css" scoped>
 .Mainbox {
   height: 250px;
-  width: 400px;
+  width: 100%; /* 让子组件宽度自适应父组件 */
+  max-width: 400px; /* 限制最大宽度以保持一致 */
   overflow: hidden;
   position: relative;
   background-color: #f9f9f9;

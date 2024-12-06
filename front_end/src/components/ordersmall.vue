@@ -30,13 +30,11 @@ const props = defineProps<{
 
 <style lang="css" scoped>
 .Mainbox {
-  height: 250px; /* 固定高度，紧凑化 */
-  width: 400px; /* 固定宽度，紧凑化 */
-  overflow: hidden; /* 超出隐藏 */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  height: 250px;
+  width: 100%; /* 让子组件宽度自适应父组件 */
+  max-width: 400px; /* 限制最大宽度以保持一致 */
+  overflow: hidden;
+  position: relative;
   background-color: #f9f9f9;
   border-radius: 10px;
   padding: 15px;

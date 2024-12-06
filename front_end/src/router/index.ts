@@ -23,6 +23,11 @@ const router = createRouter({
       name: 'personal',
       component: () => import('../views/Personal.vue')//这里写具体哪个组件
     },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: () => import('../views/ShoppingCart.vue')//这里写具体哪个组件
+    },
   ],
 })
 
