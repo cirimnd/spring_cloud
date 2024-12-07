@@ -7,6 +7,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { apiDelCartByCartId } from '@/apis/delCartByCartId';
 import { apiAddOrder } from '@/apis/addOrder';
 const route= useRoute()
+const router = useRouter()
 
 const{userId,userName,password}=route.query
 interface CartItem {
@@ -77,6 +78,29 @@ const updateCartStatus = async (cartId: number) => {
     else {ElMessage.error("结算失败！")}
   }
 };
+function toPersonal()
+{
+  router.push(
+    {
+      path:"/personal",
+      query:{
+        userName:userName,
+        password:password
+      }
+    }
+  )
+}
+
+function toHome()
+{
+  router.push({
+      name:"home",
+      params:{
+        userName:userName as string,
+        password:password as string,
+      }
+    })
+}
 </script>
 
 <template>
@@ -84,8 +108,8 @@ const updateCartStatus = async (cartId: number) => {
     <!-- 头部 -->
     <div class="head">
       <div class="mb-4">
-        <el-button round>首页</el-button>
-        <el-button round>个人</el-button>
+        <el-button round @click="toHome">首页</el-button>
+        <el-button round @click="toPersonal">个人</el-button>
       </div>
     </div>
 
@@ -97,6 +121,7 @@ const updateCartStatus = async (cartId: number) => {
           :key="item.cartId"
           :cartItem="item"
           @updateStatus="updateCartStatus"
+          class="order-card"
         />
       </div>
     </div>
@@ -111,27 +136,22 @@ const updateCartStatus = async (cartId: number) => {
 </template>
 
 
-<style>
-/* 样式保持不变 */
+<style scoped>
 .Mainbox {
-  height: 930px;
+  height:920px;
   width: 1650px;
-  overflow: auto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: aliceblue;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  max-width: 1200px; /* Limit the maximum width */
+  padding: 20px;
+  margin: 0 auto;
+  background-color: rgb(255, 255, 255);
   border-radius: 15px;
-  padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* 头部 */
 .head {
   width: 100%;
   height: 5%;
@@ -139,33 +159,54 @@ const updateCartStatus = async (cartId: number) => {
   border-radius: 10px;
   display: flex;
   align-items: center;
-  text-align: center;
+  justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* 中部展示购物车，使用 CSS Grid 布局 */
 .body {
   width: 100%;
-  height: 80%;
+  height: auto;
   background-color: #ffffff;
   border-radius: 10px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  flex-direction: column;
-  text-align: left;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Display multiple items in a row with a min-width of 280px */
+  gap: 20px; /* Space between items */
+  padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  gap: 10px;
   overflow-y: auto;
 }
 
-.order-container {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* 每列最小400px，自动填充 */
-  gap: 20px; /* 卡片之间的间距 */
+/* 每个购物车记录卡片样式 */
+.order-card {
+  background-color: #f9f9f9;
+  height: 270px;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
+.order-card:hover {
+  transform: translateY(-4px); /* Hover effect to lift the card */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.order-card h3,
+.order-card p {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.order-card p strong {
+  color: #4caf50; /* Highlight strong text with green */
+}
+
+/* 尾部 */
 .tail {
   width: 100%;
   height: 5%;
@@ -177,4 +218,10 @@ const updateCartStatus = async (cartId: number) => {
   text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+button {
+  align-self: center; /* Center the button */
+  margin-top: 12px;
+}
+
 </style>

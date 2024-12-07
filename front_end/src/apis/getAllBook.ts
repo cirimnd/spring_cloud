@@ -6,10 +6,9 @@ import httpRequest from '@/request/index'
 // }
 
 // 
-export function apiGetUserByName(username:string) {
+export function apiGetAllBook() {
     return httpRequest({
-		url: `http://localhost:9999/user/name?name=${username}`,
+		url: `http://localhost:9999/book/list`,
 		method: 'get',
-
 	})
 }

@@ -12,7 +12,7 @@ interface BookInfoParam {
 // 
 export function apiAddOrder(param: BookInfoParam) {
     return httpRequest({
-		url: 'http://localhost:8081/order/edit',
+		url: 'http://localhost:9999/order/edit',
 		method: 'post',
 		data: param,
 	})

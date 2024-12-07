@@ -8,7 +8,7 @@ import httpRequest from '@/request/index'
 // 
 export function apiDelCartByCartId(cartId:number) {
     return httpRequest({
-		url: `http://localhost:8083/cart/remove/${cartId}`,
+		url: `http://localhost:9999/cart/remove/${cartId}`,
 		method: 'delete',
 	})
 }

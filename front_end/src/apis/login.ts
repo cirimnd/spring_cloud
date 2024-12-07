@@ -10,7 +10,7 @@ interface UserInfoParam {
 // 获取用户信息
 export function apiGetUserInfo(param: UserInfoParam) {
     return httpRequest({
-		url: 'http://localhost:8082/user/login',
+		url: 'http://localhost:9999/user/login',
 		method: 'post',
 		data: param,
 	})

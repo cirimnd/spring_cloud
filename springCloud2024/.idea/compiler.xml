@@ -12,6 +12,7 @@
         <module name="bkmall-book" />
         <module name="bkmall-common" />
         <module name="bkmall-user" />
+        <module name="bkmall-gateway" />
       </profile>
     </annotationProcessing>
   </component>
@@ -20,6 +21,7 @@
       <module name="bkmall-book" options="-parameters" />
       <module name="bkmall-cart" options="-parameters" />
       <module name="bkmall-common" options="-parameters" />
+      <module name="bkmall-gateway" options="-parameters" />
       <module name="bkmall-order" options="-parameters" />
       <module name="bkmall-user" options="-parameters" />
       <module name="springCloud2024" options="" />

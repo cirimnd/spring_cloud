@@ -1,4 +1,4 @@
-//package com.example.bkmallcart.config;
+//package com.example.bkmallgateway.config;
 //
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;

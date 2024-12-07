@@ -11,7 +11,7 @@ interface UserInfoParam {
 // 
 export function apiUpdateUser(param: UserInfoParam) {
     return httpRequest({
-		url: 'http://localhost:8082/user/edit',
+		url: 'http://localhost:9999/user/edit',
 		method: 'put',
 		data: param,
 	})

@@ -1,111 +1,134 @@
 HomeafterLo.vue:<script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import BookSimple from '@/components/BookSimple.vue';
 import { Book } from '@/components/BaDataStruct/Book';
-import BookSimpleNL from '@/components/BookSimpleNL.vue';
-import { Order } from '@/components/BaDataStruct/orderAll';
-import {useRoute,useRouter} from 'vue-router'
-const route = useRoute()
-const router = useRouter()
+import { apiGetBooksByName } from '@/apis/getBooksByName'; // 书名查询 API
+import { apiGetBookByIsbn } from '@/apis/getBookByIsbn'; // ISBN查询 API
+import { apiGetBookByAuthor } from '@/apis/getBookByAuthor'; // 作者查询 API
+import { useRoute, useRouter } from 'vue-router';
+import { apiGetUserByName } from '@/apis/getUserByName';
+import { apiGetBooksByCate } from '@/apis/getBooksByCate'; // 新增分类查询 API
 
-let {userName,password}=route.params
-// console.log(route.params)
-// console.log(userName)
-// console.log(password)
-// 模拟 books 数据
-const books = ref<Book[]>([
-  new Book({
-    title: 'The Three-Body Problem',
-    author: 'Cixin Liu',
-    price: 45.0,
-    isbn: '9780765382030',
-    category: 'Science Fiction',
-    stock: 20,
-    description: 'A hard science fiction novel that begins humanity’s first contact with an alien civilization.',
-    Id: 1,
-  }),
-  new Book({
-    title: 'Pride and Prejudice',
-    author: 'Jane Austen',
-    price: 30.0,
-    isbn: '9780199535569',
-    category: 'Classic Literature',
-    stock: 12,
-    description: 'A timeless romance novel about Elizabeth Bennet and Mr. Darcy.',
-    Id: 2,
-  }),
-  new Book({
-    title: 'Sapiens: A Brief History of Humankind',
-    author: 'Yuval Noah Harari',
-    price: 50.0,
-    isbn: '9780062316097',
-    category: 'History',
-    stock: 25,
-    description: 'A groundbreaking narrative of humanity’s creation and evolution.',
-    Id: 3,
-  }),
-  new Book({
-    title: 'Clean Code',
-    author: 'Robert C. Martin',
-    price: 60.0,
-    isbn: '9780132350884',
-    category: 'Programming',
-    stock: 8,
-    description: 'A handbook of agile software craftsmanship.',
-    Id: 4,
-  }),
-  new Book({
-    title: 'To Kill a Mockingbird',
-    author: 'Harper Lee',
-    price: 40.0,
-    isbn: '9780061120084',
-    category: 'Classic Literature',
-    stock: 15,
-    description: 'A classic novel of racism and injustice in the American South.',
-    Id: 5,
-  }),
-]);
+const route = useRoute();
+const router = useRouter();
 
-//筛选选择值
+let { userName, password } = route.params;
+let userId = ref(0);
+
+// 动态加载书籍数据
+const books = ref<Book[]>([]);
+
+async function loadBooks() {
+  try {
+    const res = await apiGetBooksByName('');  // 初始化时可以加载所有书籍（或者传入空字符串）
+    if (res.code === 1) {
+      books.value = res.data.map((book: any) => new Book(book)); // 将接口数据转换为 Book 实例
+    }
+  } catch (error) {
+    console.error('加载书籍数据失败：', error);
+  }
+}
+async function getId() {
+  const res = await apiGetUserByName(userName as string);
+  if (res.code === 1) {
+    const { userid } = res.data;
+    userId.value = userid;
+  }
+}
+
+// 在组件挂载时加载书籍
+onMounted(async() => {
+  await loadBooks();
+  await getId();
+});
+
+// 筛选选择值
 const checked1 = ref(false);
 const checked2 = ref(false);
 const checked3 = ref(false);
 const checked4 = ref(false);
 
-
-const value = ref('')
+const value = ref('');
 const options = [
-  {
-    value: '作者',
-    label: '作者',
-  },
-  {
-    value: '书名',
-    label: '书名',
-  },
-  {
-    value: 'ISBN编号',
-    label: 'ISBN编号',
-  },
-  
-]
+  { value: '作者', label: '作者' },
+  { value: '书名', label: '书名' },
+  { value: 'ISBN编号', label: 'ISBN编号' },
+];
 
-
-//
 const input1 = ref('');
 
-function toPerson()
-{
-  router.push(
-    {
-      path:"/personal",
-      query:{
-        userName:userName,
-        password:password
+// 查询书籍
+const searchBooks = async () => {
+  if (value.value === '书名') {
+    const bookName = input1.value.trim();
+    if (bookName) {
+      const res = await apiGetBooksByName(bookName);
+      if (res.code === 1) {
+        books.value = res.data.map((book: any) => new Book(book)); // 更新书籍列表
       }
     }
-  )
+  } else if (value.value === 'ISBN编号') {
+    const bookIsbn = input1.value.trim();
+    if (bookIsbn) {
+      const res = await apiGetBookByIsbn(bookIsbn);
+      if (res.code === 1) {
+        books.value = [new Book(res.data)]; // 更新书籍列表为单本书籍
+      }
+    }
+  } else if (value.value === '作者') {
+    const authorName = input1.value.trim();
+    if (authorName) {
+      const res = await apiGetBookByAuthor(authorName);
+      if (res.code === 1) {
+        books.value = res.data.map((book: any) => new Book(book)); // 更新书籍列表
+      }
+    }
+  }
 }
+
+// 跳转到个人中心
+function toPerson() {
+  router.push({
+    path: '/personal',
+    query: { userName: userName, password: password },
+  });
+}
+
+// 跳转到购物车
+function toCart() {
+  router.push({
+    path: '/cart',
+    query: { userName: userName, password: password, userId: userId.value },
+  });
+}
+
+// 分类筛选
+const categories = ref({
+  '编程技术': false,
+  '科幻': false,
+  '经典文学': false,
+  '当代文学': false,
+});
+
+const filterBooksByCategory = async () => {
+  // 获取选中的分类
+  const selectedCategories = Object.keys(categories.value).filter(
+    (category) => categories.value[category]
+  );
+
+  if (selectedCategories.length > 0) {
+    // 调用 API，并将选中的类别作为参数
+    const res = await apiGetBooksByCate(selectedCategories.join(','));
+    if (res.code === 1) {
+      books.value = res.data.map((book: any) => new Book(book)); // 更新书籍列表
+    } else {
+      console.error('分类筛选失败：', res.data);
+    }
+  } else {
+    // 如果没有选择任何分类，恢复显示所有书籍
+    await loadBooks();
+  }
+};
 </script>
 
 <template>
@@ -133,12 +156,12 @@ function toPerson()
             </el-select>
           </div>
           <el-input v-model="input1" style="width: 240px" size="large" />
-          <el-button size="large">
+          <el-button size="large" @click="searchBooks">
             <el-icon><Search /></el-icon>Search
           </el-button>
         </div>
         <div class="head22">
-          <el-button round size="large">购物车</el-button>
+          <el-button round size="large" @click="toCart">购物车</el-button>
           <el-button round size="large" @click="toPerson">个人</el-button>
         </div>
       </div>
@@ -146,39 +169,37 @@ function toPerson()
 
     <div class="content">
       <div class="body">
-       <div class="book-container">
-        <!-- <BookSimple
-         v-for="book in books"
-         :key="book.Id"
-         :book="book"
-         /> -->
-
-       </div>
-        
-       
-       
+        <div class="book-container">
+          <BookSimple
+            v-for="book in books"
+            :key="book.Id"
+            :book="book"
+            :userId="userId"
+          />
+        </div>
       </div>
       <div class="aside">
         <el-text class="text">分类</el-text>
         <div class="checkbox-group">
-          <el-checkbox v-model="checked1" label="自然科学" border />
-          <el-checkbox v-model="checked2" label="社会科学" border />
-          <el-checkbox v-model="checked3" label="艺术" border />
-          <el-checkbox v-model="checked4" label="文学" border />
+          <el-checkbox v-model="categories['编程技术']" label="编程技术" border />
+          <el-checkbox v-model="categories['科幻']" label="科幻" border />
+          <el-checkbox v-model="categories['经典文学']" label="经典文学" border />
+          <el-checkbox v-model="categories['当代文学']" label="当代文学" border />
         </div>
+        <el-button @click="filterBooksByCategory">筛选</el-button>
       </div>
     </div>
   </div>
 </template>
 
 
+
 <style lang="css" scoped>
 /* 主容器 Mainbox */
 .Mainbox {
   height: 930px;
-  width: 1650px;
-  max-width: 100%; /* 容器宽度自适应 */
-  max-height: 100%; /* 容器高度自适应 */
+  width: 100%; /* 设置为100%宽度，避免容器宽度固定 */
+  max-width: 1600px; /* 设置最大宽度，避免在大屏幕上过宽 */
   overflow: auto;
   position: absolute;
   top: 50%;
@@ -193,6 +214,7 @@ function toPerson()
   display: flex;
   flex-direction: column; /* 垂直排列 */
   gap: 20px; /* 各区块间距 */
+  box-sizing: border-box; /* 确保padding不会影响容器宽度 */
 }
 
 /* 头部区域 head */
@@ -303,8 +325,6 @@ function toPerson()
   text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
-   float: left;
-   overflow: auto; /* 自动显示滚动条 */
 }
 
 /* 侧边栏区域 aside */
@@ -335,10 +355,14 @@ function toPerson()
 }
 
 .book-container {
-  width: 100%;
   display: flex;
-  flex-direction: column; /* 垂直排列订单卡片 */
-  gap: 10px;
+  flex-wrap: wrap;  /* 保证书籍能换行 */
+  gap: 20px;        /* 每本书之间的间距 */
+}
+
+.book-container .book {
+  flex: 1 1 calc(25% - 20px); /* 4列布局，每列宽度为25%减去间距 */
+  box-sizing: border-box; /* 确保宽度计算时包含间距 */
 }
 
 </style>

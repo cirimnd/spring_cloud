@@ -20,7 +20,7 @@ export class Book implements IBook {
     description: string = '';
     Id: number=0;
 
-    constructor(data: Partial<IBook> = {}) {
+    constructor(data: any = {}) {
         this.title = data.title || '';
         this.isbn = data.isbn || '';
         this.author = data.author || '';
@@ -28,7 +28,7 @@ export class Book implements IBook {
         this.category = data.category || '';
         this.stock = data.stock || 0;
         this.description = data.description || '';
-        this.Id=data.Id=data.Id || 0;
+        this.Id=data.Id || data.id || 0;
     }
 
     // Getters

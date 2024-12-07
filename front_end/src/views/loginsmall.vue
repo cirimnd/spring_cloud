@@ -16,7 +16,6 @@ function login(){
 async function main()
 {
   let res = await apiGetUserInfo(param)
-  console.log(res)
   if(res.code==1)
   {
     ElMessage.success('登录成功');

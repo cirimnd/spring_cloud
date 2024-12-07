@@ -30,41 +30,45 @@ const props = defineProps<{
 
 <style lang="css" scoped>
 .Mainbox {
-  height: 250px;
-  width: 100%; /* 让子组件宽度自适应父组件 */
-  max-width: 400px; /* 限制最大宽度以保持一致 */
-  overflow: hidden;
-  position: relative;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: auto;
+  width: 300px; /* 自适应父容器宽度 */
+  max-height: 250px;
+  height: auto; /* 根据内容调整高度 */
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #ffffff; /* 背景为白色 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 适中的阴影 */
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px; /* 控制元素间距 */
+  margin: 10px auto; /* 居中 */
 }
 
 .order-card {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: white;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 添加柔和阴影 */
+  transition: transform 0.3s, box-shadow 0.3s;
+  background-color: #f9f9f9;
 }
 
-h3 {
-  margin: 0 0 5px;
+.order-card:hover {
+  transform: translateY(-4px); /* 悬停时略微上移 */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* 增强阴影效果 */
+}
+
+h3, p {
+  margin: 0 0 8px;
   color: #333;
   font-size: 16px;
 }
 
-p {
-  margin: 0;
-  color: #555;
-  font-size: 14px;
+p strong {
+  color: #4caf50; /* 绿色突出关键字段 */
 }
 
 button {
-  align-self: center;
+  align-self: center; /* 按钮居中 */
+  margin-top: 12px;
 }
 </style>

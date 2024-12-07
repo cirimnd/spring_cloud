@@ -8,7 +8,7 @@ import httpRequest from '@/request/index'
 // 
 export function apiGetCartByUserId(userId:number) {
     return httpRequest({
-		url: `http://localhost:8083/cart/list/${userId}`,
+		url: `http://localhost:9999/cart/list/${userId}`,
 		method: 'get',
 	})
 }

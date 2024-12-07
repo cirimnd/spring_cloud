@@ -8,7 +8,7 @@ import httpRequest from '@/request/index'
 // 
 export function apiGetOrderByUserId(userId:number) {
     return httpRequest({
-		url: `http://localhost:8081/order/user/${userId}`,
+		url: `http://localhost:9999/order/user/${userId}`,
 		method: 'get',
 	})
 }

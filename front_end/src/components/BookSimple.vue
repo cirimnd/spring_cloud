@@ -3,17 +3,28 @@ import { Book } from './BaDataStruct/Book';
 import { ref, computed } from 'vue';
 import { ElButton } from 'element-plus'; // 引入 Element Plus 按钮组件
 import 'element-plus/theme-chalk/el-button.css'; // 引入样式
+import { useRouter } from 'vue-router';
+const router=useRouter()
 
 // 接收 props
 const props = defineProps<{
   book: Book;
+  userId: number;
 }>();
 
 
 
 // 按钮点击事件
 const handleButtonClick = () => {
-  
+  router.push(
+    {
+      path:"/book",
+      query:{
+        bookId:props.book.Id,
+        userId:props.userId
+      }
+    }
+  )
 };
 
 // 书籍描述截断逻辑
@@ -26,8 +37,8 @@ const truncatedDescription = computed(() => {
 </script>
 
 <template>
-  <div class="Mainbox">
-    <!-- 展示书籍信息 -->
+  <div class="book-card">
+    <!-- 书籍内容展示 -->
     <div class="book-info">
       <h2>{{ book.title }}</h2>
       <p><strong>Author:</strong> {{ book.author }}</p>
@@ -44,43 +55,35 @@ const truncatedDescription = computed(() => {
 </template>
 
 <style lang="css" scoped>
-.Mainbox {
-  height: 300px; /* 高度固定 */
-  width: 700px; /* 宽度增加并固定 */
-  overflow: auto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #f9f9f9;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column; /* 主轴改为列方向 */
-  gap: 20px; /* 各区块间距 */
-}
-
-.book-info {
+.book-card {
+  width: 280px; /* 调整卡片宽度 */
+  height: 350px; /* 调整卡片高度 */
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  justify-content: space-between; /* 上下内容分布 */
+  gap: 10px;
 }
 
+/* 书籍信息样式 */
 .book-info h2 {
-  margin: 0;
+  font-size: 16px;
   color: #333;
+  margin-bottom: 8px;
 }
 
 .book-info p {
-  margin: 0;
+  font-size: 14px;
   color: #555;
+  margin: 0;
 }
 
-button {
+/* 按钮居中 */
+.book-card button {
   align-self: center;
 }
 </style>

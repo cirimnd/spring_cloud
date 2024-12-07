@@ -28,6 +28,11 @@ const router = createRouter({
       name: 'cart',
       component: () => import('../views/ShoppingCart.vue')//这里写具体哪个组件
     },
+    {
+      path: '/book',
+      name: 'book',
+      component: () => import('../views/BookDe.vue')//这里写具体哪个组件
+    }
   ],
 })
 

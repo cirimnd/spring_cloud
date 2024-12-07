@@ -1,0 +1,34 @@
+value: 1
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spring_cloud
+    username: root
+    password: 040428
+  cloud:
+    gateway:
+      routes:
+        - id: book-service						# 路由唯一标识
+          uri: lb://book-service		# 路由指向目的地URL或服务名，客户端请求最终被转发到的微服务
+          filters: []
+          predicates:
+          - Path=/book/** 				# 断言：以book开头的请求都负载到book-service服务
+          order: 5		
+        - id: cart-service						# 路由唯一标识
+          uri: lb://cart-service		# 路由指向目的地URL或服务名，客户端请求最终被转发到的微服务
+          filters: []
+          predicates:
+          - Path=/cart/** 				# 断言：以book开头的请求都负载到manager_server服务
+          order: 1		
+        - id: order-service						# 路由唯一标识
+          uri: lb://order-service		# 路由指向目的地URL或服务名，客户端请求最终被转发到的微服务
+          filters: []
+          predicates:
+          - Path=/order/** 				# 断言：以book开头的请求都负载到manager_server服务
+          order: 1
+        - id: user-service                        # 路由唯一标识
+          uri: lb://user-service        # 路由指向目的地URL或服务名，客户端请求最终被转发到的微服务
+          filters: [ ]
+          predicates:
+            - Path=/user/**                # 断言：以user开头的请求都负载到manager_server服务
+          order: 1

@@ -20,6 +20,7 @@
         <module>bkmall-user</module>
         <module>bkmall-order</module>
         <module>bkmall-cart</module>
+        <module>bkmall-gateway</module>
     </modules>
 
     <properties>

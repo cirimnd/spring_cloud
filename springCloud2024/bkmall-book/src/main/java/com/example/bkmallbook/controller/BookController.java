@@ -29,6 +29,11 @@ import java.util.List;
 public class BookController {
     private final IBookService bookService;
 
+    @GetMapping("/list")
+    public Result list() {
+        List<Book> bookList = bookService.list();
+        return Result.success(bookList);
+    }
     /**
      * 根据书本id查询
      * @param id
@@ -38,6 +43,13 @@ public class BookController {
     public Result getBookById(@PathVariable("id") Long id) {
         Book book = bookService.lambdaQuery()
                 .eq(Book::getId, id).one();
+        return Result.success(book);
+    }
+
+    @GetMapping("/isbn/{isbn}")
+    public Result getBookByIsbn(@PathVariable("isbn") String isbn) {
+        Book book = bookService.lambdaQuery()
+                .eq(Book::getIsbn,isbn).one();
         return Result.success(book);
     }
 
@@ -80,13 +92,13 @@ public class BookController {
 
     /**
      * 根据类别查询
-     * @param catagory
+     * @param catagorys
      * @return
      */
-    @GetMapping("/catagory")
-    public Result getBooksByCatagory(@RequestParam String catagory) {
+    @GetMapping("/cata/{catagorys}")
+    public Result getBooksByCatagorys(@PathVariable List<String> catagorys) {
         List<Book> bookList = bookService.lambdaQuery()
-                .eq(Book::getCategory, catagory)
+                .in(Book::getCategory, catagorys)
                 .orderByAsc(Book::getId)
                 .list();
         return Result.success(bookList);
@@ -135,4 +147,5 @@ public class BookController {
         if(flg) return Result.success("更新成功");
         else return Result.error("更新失败");
     }
+
 }

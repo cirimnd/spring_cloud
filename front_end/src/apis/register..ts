@@ -11,7 +11,7 @@ interface UserInfoParam {
 // 
 export function apiRegister(param: UserInfoParam) {
     return httpRequest({
-		url: 'http://localhost:8082/user/add',
+		url: 'http://localhost:9999/user/add',
 		method: 'post',
 		data: param,
 	})

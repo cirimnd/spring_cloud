@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/springCloud2024.iml" filepath="$PROJECT_DIR$/springCloud2024.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bkmall-gateway/bkmall-gateway.iml" filepath="$PROJECT_DIR$/bkmall-gateway/bkmall-gateway.iml" />
     </modules>
   </component>
 </project>

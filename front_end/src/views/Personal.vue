@@ -121,7 +121,13 @@ const cancelEdit = () => {
 
 function back()
 {
-  router.go(-1)
+  router.push({
+      name:"home",
+      params:{
+        userName:userName as string,
+        password:password as string,
+      }
+    })
 }
 function toCart()
 {
@@ -201,69 +207,76 @@ function toCart()
   </div>
 </template>
 
-<style>
-/* 样式保持不变 */
+<style scoped>
 /* 主容器样式 */
 .Mainbox {
-  height: 95vh; /* 页面高度占满视口 */
-  width: 90vw; /* 页面宽度为视口宽度的90% */
-  max-width: 1200px; /* 限制最大宽度，保持统一外观 */
-  margin: 0 auto; /* 居中对齐 */
-  overflow: auto;
-  background-color: #f5f5f5;
+  height: 930px;
+  width: 1650px;
+  max-width: 1600px;
+  margin: 20px auto;
+  background-color: #ffffff;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 添加阴影效果 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 20px;
+  overflow: hidden;
 }
 
-/* 顶部区域样式 */
+/* 顶部导航栏 */
 .head {
   width: 100%;
-  height: 60px; /* 适中高度 */
-  background-color: #e3f2fd;
-  border-radius: 8px;
   display: flex;
+  justify-content: flex-start;
   align-items: center;
-  justify-content: space-between; /* 按钮分散排列 */
-  padding: 0 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f7f9fc;
+  padding: 10px 15px;
+  border-radius: 8px;
+  gap: 10px;
 }
 
 .head .el-button {
   font-size: 14px;
-  padding: 6px 12px;
+  padding: 8px 14px;
+  color: #4caf50;
+  border-color: #4caf50;
+}
+
+.head .el-button:hover {
+  background-color: #4caf50;
+  color: #ffffff;
 }
 
 /* 主内容区域 */
 .content {
   display: flex;
+  gap: 25px;
   flex: 1;
-  gap: 20px;
-  align-items: flex-start; /* 子内容顶部对齐 */
+  overflow: hidden;
 }
 
-/* 左侧侧边栏 */
+/* 侧边栏 */
 .aside {
-  flex: 0 0 250px; /* 固定宽度为250px */
-  background-color: #c8e6c9;
+  flex: 0 0 250px;
+  background-color: #f9f9f9;
   border-radius: 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
 }
 
 .avatar {
+  width: 90px;
+  height: 90px;
+  font-size: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 24px;
-  background-color: #ffccbc;
+  background-color: #4caf50;
   color: #ffffff;
   border-radius: 50%;
 }
@@ -272,125 +285,153 @@ function toCart()
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .info-item {
   display: flex;
-  align-items: center;
-  justify-content: space-between; /* 标签和值分布排列 */
+  justify-content: space-between;
+  font-size: 15px;
 }
 
 .info-label {
   font-weight: bold;
-  font-size: 14px;
-  color: #4caf50;
+  color: #333333;
 }
 
 .info-value {
-  font-size: 14px;
   color: #555555;
 }
 
-/* 主体订单列表 */
+.btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-container .el-button {
+  font-size: 15px;
+  padding: 8px 15px;
+  background-color: #4caf50;
+  color: #ffffff;
+  border-radius: 6px;
+}
+
+.btn-container .el-button:hover {
+  background-color: #388e3c;
+}
+
+/* 订单展示区域 */
 .body {
   flex: 1;
   background-color: #ffffff;
   border-radius: 10px;
   padding: 20px;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
   gap: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
 }
 
-/* 标题容器样式 */
 .order-header {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start; /* 标题左对齐 */
-  gap: 10px;
-  padding: 10px 20px;
-  background-color: #f0f4f8; /* 标题背景色 */
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* 标题文字样式 */
 .order-title {
-  font-size: 26px;
-  font-weight: bold;
-  color: #333333;
-  margin: 0;
+  font-size: 20px;
+  color: #4caf50;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* 图标样式 */
 .order-title i {
   font-size: 24px;
-  color: #4caf50; /* 使用绿色与标题呼应 */
 }
 
-/* 分割线样式 */
 .header-divider {
-  width: 100%;
+  margin-top: 5px;
   height: 2px;
-  background: linear-gradient(to right, #4caf50, #81c784); /* 渐变分割线 */
+  background-color: #e0e0e0;
   border: none;
 }
 
-/* 订单网格容器样式 */
 .order-container {
-  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 自适应网格布局 */
-  gap: 16px; /* 卡片之间的间距 */
-  padding-top: 10px; /* 上方增加一点间距 */
+  width: 320px;
+  gap: 10px;
 }
 
-/* 弹窗按钮居中对齐 */
-.btn-container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-/* 订单卡片 */
 .order-card {
-  position: relative;
-  padding: 16px;
-  border: 1px solid #ddd;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
   background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .order-card:hover {
-  transform: translateY(-5px); /* 鼠标悬停时抬起 */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .order-card h3 {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 8px;
+  font-size: 18px;
+  color: #333333;
+  margin: 0;
 }
 
 .order-card p {
+  font-size: 15px;
+  color: #666666;
   margin: 0;
-  color: #666;
-  font-size: 14px;
-  line-height: 1.6;
 }
 
 .order-card strong {
-  color: #4caf50; /* 突出关键字段 */
+  color: #4caf50;
+}
+
+/* 弹窗 */
+.el-dialog {
+  border-radius: 12px;
+  max-width: 400px;
+}
+
+.dialog-footer {
+  text-align: right;
+  padding: 10px 15px;
+}
+
+.el-button {
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .Mainbox {
+    width: 100%;
+  }
+
+  .content {
+    flex-direction: column;
+  }
+
+  .aside {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .body {
+    width: 100%;
+  }
 }
 
 </style>
