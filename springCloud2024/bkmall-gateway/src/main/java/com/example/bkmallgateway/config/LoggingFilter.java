@@ -45,42 +45,7 @@ public class LoggingFilter implements GlobalFilter, Ordered  {
         log.info("");
         log.info(" --------------------- 请求开始 ------------------------");
         log.info("原始请求信息：URI = {}, path = {}，method = {}，header = {}。", URIPath, path, method, header);
-        if ("POST".equals(method)) {
-            return DataBufferUtils.join(exchange.getRequest().getBody())
-                    .flatMap(dataBuffer -> {
-                        byte[] bytes = new byte[dataBuffer.readableByteCount()];
-                        dataBuffer.read(bytes);
-                        String bodyString = new String(bytes, StandardCharsets.UTF_8);
-                        bodyString = bodyString.replaceAll("\"ImageBase64\":\"[^\"]*\",", "");
-                        log.info("{} 请求参数,不包含ImageBase64：" + bodyString,exchange.getAttributes().get("requestId"));
-                        exchange.getAttributes().put("POST_BODY", bodyString);
-                        DataBufferUtils.release(dataBuffer);
-                        Flux<DataBuffer> cachedFlux = Flux.defer(() -> {
-                            DataBuffer buffer = exchange.getResponse().bufferFactory()
-                                    .wrap(bytes);
-                            return Mono.just(buffer);
-                        });
 
-                        ServerHttpRequest mutatedRequest = new ServerHttpRequestDecorator(
-                                exchange.getRequest()) {
-                            @NotNull
-                            @Override
-                            public Flux<DataBuffer> getBody() {
-                                return cachedFlux;
-                            }
-                        };
-                        return chain.filter(exchange.mutate().request(mutatedRequest)
-                                .build()).doFinally(signalType -> {
-                            // 请求处理完毕后清理变量
-                            exchange.getAttributes().remove("requestId");
-                            exchange.getAttributes().remove("hasAcquired");
-                        });
-                    });
-        } else if ("GET".equals(method)) {
-            MultiValueMap<String, String> queryParams = request.getQueryParams();
-            log.info("{} 请求参数：" + queryParams,exchange.getAttributes().get("requestId"));
-            return chain.filter(exchange);
-        }
         return chain.filter(exchange);
     }
 
